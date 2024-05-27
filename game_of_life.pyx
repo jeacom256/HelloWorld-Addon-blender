@@ -33,7 +33,6 @@ cdef class GameOfLife:
             seed = xorshift(seed) # next random step
             self.data[i] = seed & 0x1
 
-    @cython.boundscheck(False) #disable boundscheck to make access even faster
     cdef inline char read_cell(self, int x, int y):
         # cast data to a raw pointer view for faster access
         cdef char* data = PyByteArray_AS_STRING(self.data)
@@ -41,7 +40,6 @@ cdef class GameOfLife:
         y = y % self.h 
         return data[x + y * self.w]
     
-    @cython.boundscheck(False) #disable boundscheck to make access even faster
     cdef inline void write_next_cell(self, char val, int x, int y):
         # cast data to a raw pointer view for faster access
         cdef char*  data = PyByteArray_AS_STRING(self.data_pingpong)
